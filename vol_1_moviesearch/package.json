@@ -19,7 +19,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "check": "tsc -p . --noEmit",
+    "fmt": "prettier --write '**/*.{js,json,md,html,ts,tsx}'"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "^1.19.1"
   }
 }
