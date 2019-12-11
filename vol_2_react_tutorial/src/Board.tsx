@@ -1,17 +1,27 @@
 import React from 'react'
-import Square from './Square'
+import { Square, SquareNumber } from './Square'
+import { GameState, squares } from './App'
 
-class Board extends React.Component {
-  renderSquare(i: number) {
-    return <Square />
+interface BoardProps {
+  onClick: (_: SquareNumber) => void
+  squares: squares
+  xIsNext: boolean
+}
+
+class Board extends React.Component<BoardProps> {
+  renderSquare(i: SquareNumber) {
+    return (
+      <Square
+        mark={this.props.squares[i]}
+        num={i}
+        onClick={() => this.props.onClick(i)}
+      />
+    )
   }
 
   render() {
-    const status = 'Next player: X'
-
     return (
       <div>
-        <div className="status">{status}</div>
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}

@@ -2,3 +2,9 @@
 
 - https://ja.reactjs.org/tutorial/tutorial.html
 - 加えて、Typescriptで書いてみる
+
+![image](./screenshot.png)
+
+```
+$ yarn start
+```
