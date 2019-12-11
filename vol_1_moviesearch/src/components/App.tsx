@@ -1,16 +1,23 @@
-import React, { useState, useEffect, useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import './App.css'
 import Header from './Header'
 import { MovieModel } from '../models/MovieModel'
 import MovieComponent from './Movie'
 import Search from './Search'
 
-const MOVIE_API_URL = 'https://www.omdbapi.com/?s=man&apikey=4a3b711b' // you should replace this with yours
+const MOVIE_API_URL = 'https://www.omdbapi.com/?apikey=983eb7a1&s=man' // you should replace this with yours
+
+function toLowerHelper(obj: Object): Object {
+  return Object.keys(obj).reduce(
+    (c, k) => ((c[k.toLowerCase()] = obj[k]), c),
+    {}
+  )
+}
 
 type State = {
   loading: boolean
   movies: MovieModel[]
-  errorMessage?: string
+  errorMessage: string | null
 }
 
 const initialState: State = {
@@ -56,27 +63,48 @@ const App: React.FC = () => {
     fetch(MOVIE_API_URL)
       .then(response => response.json())
       .then(jsonResponse => {
-        setMovies(jsonResponse.Search)
-        setLoading(false)
+        console.log(jsonResponse)
+
+        const models = (jsonResponse.Search as Array<any>).map(o =>
+          toLowerHelper(o)
+        ) as MovieModel[]
+
+        dispatch({
+          type: 'SEARCH_MOVIES_SUCCESS',
+          payload: models
+        })
+      })
+      .catch(e => {
+        console.error(e)
       })
   }, [])
 
   const search = (searchValue: string) => {
-    setLoading(true)
-    setErrorMessage(null)
+    dispatch({ type: 'SEARCH_MOVIES_REQUEST' })
 
-    fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=4a3b711b`)
+    fetch(`https://www.omdbapi.com/?apikey=983eb7a1&s=${searchValue}`)
       .then(response => response.json())
       .then(jsonResponse => {
+        console.log(jsonResponse)
         if (jsonResponse.Response === 'True') {
-          setMovies(jsonResponse.Search)
-          setLoading(false)
+          const models = (jsonResponse.Search as Array<any>).map(o =>
+            toLowerHelper(o)
+          ) as MovieModel[]
+
+          dispatch({
+            type: 'SEARCH_MOVIES_SUCCESS',
+            payload: models
+          })
         } else {
-          setErrorMessage(jsonResponse.Error)
-          setLoading(false)
+          dispatch({
+            type: 'SEARCH_MOVIES_FAILURE',
+            error: jsonResponse.Error
+          })
         }
       })
   }
+
+  const { movies, errorMessage, loading } = state
 
   return (
     <div className="App">
@@ -89,7 +117,7 @@ const App: React.FC = () => {
         ) : errorMessage ? (
           <div className="errorMessage">{errorMessage}</div>
         ) : (
-          (movies as MovieModel[]).map((movie, index) => (
+          movies.map((movie, index) => (
             <MovieComponent key={`${index}-${movie.title}`} movie={movie} />
           ))
         )}

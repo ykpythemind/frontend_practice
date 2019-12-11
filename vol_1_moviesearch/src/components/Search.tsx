@@ -18,7 +18,7 @@ const Search: React.FC<SearchProps> = props => {
   const callSearchFunction = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     props.search(searchValue)
-    resetInputField()
+    // resetInputField()
   }
 
   return (
