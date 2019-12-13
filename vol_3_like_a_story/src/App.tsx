@@ -3,6 +3,8 @@ import UserForm from './UserForm'
 import UserList from './UserList'
 import DarkModeToggle from './DarkModeToggle'
 
+import { RootState } from './types'
+
 const App: React.FC = () => {
   return (
     <div className="App">
