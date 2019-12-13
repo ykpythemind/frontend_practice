@@ -1,6 +1,7 @@
 import React from 'react'
 import UserForm from './UserForm'
 import UserList from './UserList'
+import DarkModeToggle from './DarkModeToggle'
 
 const App: React.FC = () => {
   return (
@@ -9,6 +10,8 @@ const App: React.FC = () => {
       <UserForm />
       <br />
       <UserList />
+      <br />
+      <DarkModeToggle />
     </div>
   )
 }
