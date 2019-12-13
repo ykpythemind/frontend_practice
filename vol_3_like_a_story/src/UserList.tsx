@@ -45,8 +45,8 @@ class UserList extends React.Component<Props> {
       <div>
         {this.props.isLoading ? 'loading...' : ''}
         <ol>
-          {this.props.users.map(u => {
-            return <li>{u.name}</li>
+          {this.props.users.map((u, i) => {
+            return <li key={i}>{u.name}</li>
           })}
         </ol>
       </div>
